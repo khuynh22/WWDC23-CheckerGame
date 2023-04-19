@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "VS Computer.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
