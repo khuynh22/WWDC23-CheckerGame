@@ -7,7 +7,10 @@ The project is completed for the WWDC23 Student Scholarships Submission. The pro
 * Created the application wireframe using Figma and conducted user testing with 6 participants for improvements.
 <img width="1512" alt="image" src="https://user-images.githubusercontent.com/57774658/235327699-83bc25fa-9174-479f-bd3c-352442052b17.png">
 
-and during the experienced of developing this project, I learned a lot about the Swift language and Swift Playground. Many thanks for the Apple Teams which such a great opportunity for students to learn about Swift.
+* Developed the Checker Game application in Swift using XCode and Swift Playground.
+<img width="1512" alt="Screenshot 2023-04-29 at 18 13 59" src="https://user-images.githubusercontent.com/57774658/235327766-8bbe1058-5ca7-4ac5-ba4f-02f898b7e30f.png">
+
+During the experienced of developing this project, I learned a lot about the Swift language and Swift Playground. Many thanks for the Apple Teams which such a great opportunity for students to learn about Swift.
 
 ## Features
 
