@@ -1,4 +1,5 @@
 # Welcome to the Checkers game project!
+<img width="1512" alt="image" src="https://user-images.githubusercontent.com/57774658/235327043-3af8cbe1-76ad-4f13-94a1-31a3f27cdc6c.png">
 
 This project aims to provide a fun and easy way for younger people to learn and play the classic game of Checkers. I noticed that there were not many Checkers games available on the MacOS App Store, so I decided to create one that is not only enjoyable but also educational. 
 
