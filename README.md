@@ -3,7 +3,11 @@
 
 This project aims to provide a fun and easy way for younger people to learn and play the classic game of Checkers. I noticed that there were not many Checkers games available on the MacOS App Store, so I decided to create one that is not only enjoyable but also educational. 
 
-The project is completed for the WWDC23 Student Scholarships Submission, and during the experienced of developing this project, I learned a lot about the Swift language and Swift Playground. Many thanks for the Apple Teams which such a great opportunity for students to learn about Swift.
+The project is completed for the WWDC23 Student Scholarships Submission. The process of building the project is:
+* Created the application wireframe using Figma and conducted user testing with 6 participants for improvements.
+<img width="1512" alt="image" src="https://user-images.githubusercontent.com/57774658/235327699-83bc25fa-9174-479f-bd3c-352442052b17.png">
+
+and during the experienced of developing this project, I learned a lot about the Swift language and Swift Playground. Many thanks for the Apple Teams which such a great opportunity for students to learn about Swift.
 
 ## Features
 
