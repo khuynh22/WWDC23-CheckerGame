@@ -4,6 +4,7 @@
 [![Platform](https://img.shields.io/badge/Platform-iOS%2016.0%2B-blue.svg)](https://developer.apple.com/ios/)
 [![Swift Playgrounds](https://img.shields.io/badge/Swift%20Playgrounds-Compatible-green.svg)](https://www.apple.com/swift/playgrounds/)
 [![WWDC23](https://img.shields.io/badge/WWDC23-Student%20Scholarship-red.svg)](https://developer.apple.com/wwdc23/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 <img width="1512" alt="WWDC23 Checkers Game Main Screen" src="https://user-images.githubusercontent.com/57774658/235327043-3af8cbe1-76ad-4f13-94a1-31a3f27cdc6c.png">
 
