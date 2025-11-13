@@ -2,37 +2,65 @@
  Project for WWDC 2023
  Author: Khang Nguyen Huynh
  Finished on April 15th, 2023
- HowToPlay file
+ HowToPlay file - Tutorial and Rules Screen
  */
+
 import SwiftUI
 
+/// A comprehensive tutorial screen that explains the rules and gameplay of checkers
+///
+/// This view provides new players with essential information including:
+/// - Required materials for playing checkers
+/// - Game setup instructions
+/// - Objective and winning conditions
+/// - Movement and capture rules
+/// - King piece mechanics
 struct HowToPlay: View {
-    // existing state variables
-    @Binding var htp:Bool
-    @Binding var MainScreen:Bool
-    @Binding var present:gamemode
+    // MARK: - State Properties
+    
+    /// Binding to control the display of this How to Play screen
+    @Binding var htp: Bool
+    
+    /// Binding to control the main game screen
+    @Binding var MainScreen: Bool
+    
+    /// Binding to track the current game mode
+    @Binding var present: gamemode
+    
+    /// Controls navigation back to the main menu
     @State private var menu = false
+    
+    /// Animation property for transitions (currently unused)
     @State private var moveLength: Double = 50
+    
+    /// Opacity control for UI elements (currently unused)
     @State private var transparent: Double = 1
     
-    // new state variable for How to Play scene
+    /// State variable for How to Play scene (currently unused)
     @State private var howToPlayScreen = false
+    
+    // MARK: - Body
     
     var body: some View {
         ZStack {
+            // Background image
             Image("Backgroundscene")
                 .resizable()
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
                 .offset(x: 0, y: 0)
+            
             VStack(spacing: 10) {
+                // Title section
                 HStack() {
-                    Image("How to play title") 
+                    Image("How to play title")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 474, height: 116)
                         .offset(x: 20, y: 0)
-                }.offset(x: 0, y: 0)
+                        .accessibilityLabel("How to Play")
+                }
+                .offset(x: 0, y: 0)
                 
                 VStack(spacing:10) {
                     VStack(spacing:10) {

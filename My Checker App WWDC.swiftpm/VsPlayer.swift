@@ -2,26 +2,65 @@
  Project for WWDC 2023
  Author: Khang Nguyen Huynh
  Finished on April 15th, 2023
- VsPlayer file (main file)
+ VsPlayer file - Player vs Player Game View
  */
+
 import SwiftUI
 import AVFoundation
 
+/// The main game view for Player vs Player mode
+///
+/// This view handles the complete checkers game logic for two human players,
+/// including board rendering, move validation, capture mechanics, king promotion,
+/// and win condition detection. The game follows standard American checkers rules.
 struct VsPlayer: View {
+    // MARK: - Types
+    
+    /// Enumeration representing which player's turn it is
     enum turns {
-        case orange, black
+        /// Orange/Red player (starts at top of board)
+        case orange
+        
+        /// Black player (starts at bottom of board)
+        case black
     }
-    @Binding var MainScreen:Bool
-    @Binding var present:gamemode
-    @State var feature:[[Features]] = Array(repeating: Array(repeating: Features(), count: 8), count: 8)
-    @State var turn:turns = .black
+    
+    // MARK: - State Properties
+    
+    /// Binding to control the display of this game screen
+    @Binding var MainScreen: Bool
+    
+    /// Binding to track the current game mode
+    @Binding var present: gamemode
+    
+    /// 2D array representing the 8x8 game board with all piece states
+    @State var feature: [[Features]] = Array(repeating: Array(repeating: Features(), count: 8), count: 8)
+    
+    /// Current player's turn
+    @State var turn: turns = .black
+    
+    /// Available legal move positions for the currently selected piece
     @State var heal = [coordinate]()
+    
+    /// Potential capture positions for the currently selected piece
     @State var enemy = [coordinate]()
+    
+    /// Stores the position of the currently selected piece
     @State var exchanges = coordinate(x: 0, y: 0)
+    
+    /// Pieces that have mandatory captures available (forced jumps)
     @State var eat = [coordinate]()
+    
+    /// Indicates whether a capture search is in progress
     @State var search: Bool = false
+    
+    /// Count of remaining red/orange pieces
     @State var numberRed: Int = 12
+    
+    /// Count of remaining black pieces
     @State var numberBlack: Int = 12
+    
+    /// Win message to display ("P2 Win" for black, "P1 Win" for red, or empty string)
     @State var win: String = ""
     
     var body: some View {
@@ -163,14 +202,21 @@ struct VsPlayer: View {
         }
     }
     
-    func MapColor(i:Int, j:Int)->Color{
-        if i % 2 == 0{
+    // MARK: - Board Rendering Functions
+    
+    /// Determines the color of a board square based on its position
+    /// - Parameters:
+    ///   - i: Row index (0-7)
+    ///   - j: Column index (0-7)
+    /// - Returns: Color for the square (light or dark)
+    func MapColor(i: Int, j: Int) -> Color {
+        if i % 2 == 0 {
             if j % 2 == 0 {
                 return Color(red: 161/255, green: 180/255, blue: 195/255)
-            } else { 
+            } else {
                 return Color(red: 248/255, green: 252/255, blue: 255/255)
             }
-        } else{
+        } else {
             if j % 2 == 0 {
                 return Color(red: 248/255, green: 252/255, blue: 255/255)
             } else {
@@ -179,6 +225,15 @@ struct VsPlayer: View {
         }
     }
     
+    // MARK: - Game Initialization
+    
+    /// Initializes or resets the game board to starting positions
+    ///
+    /// Sets up the standard checkers starting configuration:
+    /// - Red/orange pieces in rows 0-2
+    /// - Black pieces in rows 5-7
+    /// - Pieces only on dark squares
+    /// - Resets all game state variables
     func EarlyStart() {
         feature = Array(repeating: Array(repeating: Features(), count: 8), count: 8)
         turn = .black
@@ -228,33 +283,61 @@ struct VsPlayer: View {
         }
     }
     
-    // function to decide color of the checker
-    func ColorChoice(x:Int, y:Int) -> Color{
-        if feature[x][y].choose == true{
+    // MARK: - UI Helper Functions
+    
+    /// Determines the highlight color for a piece at the given position
+    /// - Parameters:
+    ///   - x: Row index
+    ///   - y: Column index
+    /// - Returns: Red if piece is selected, otherwise its team color
+    func ColorChoice(x: Int, y: Int) -> Color {
+        if feature[x][y].choose == true {
             return Color.red
-        }
-        else{
+        } else {
             return feature[x][y].color
         }
     }
-    func OpaChoice(x:Int, y:Int) -> Double{
-        if feature[x][y].choose == true{
+    
+    /// Determines the opacity for the selection highlight ring
+    /// - Parameters:
+    ///   - x: Row index
+    ///   - y: Column index
+    /// - Returns: 1.0 if piece is selected, 0.0 otherwise
+    func OpaChoice(x: Int, y: Int) -> Double {
+        if feature[x][y].choose == true {
             return 1
-        }
-        else{
+        } else {
             return 0
         }
     }
-    func PouncedPosition(){
-        for he in heal{
-            if feature[he.x][he.y].transparent == 0.3{
+    
+    // MARK: - Move Highlighting Functions
+    
+    /// Clears highlighted legal move positions from the board
+    func PouncedPosition() {
+        for he in heal {
+            if feature[he.x][he.y].transparent == 0.3 {
                 feature[he.x][he.y].transparent = 0
                 feature[he.x][he.y].color = Color.red
             }
         }
         heal = [coordinate]()
     }
-    func PouncedPosition(i:Int, j:Int, turncolor:Color, enemycolor: Color, imageType: String, oppImageType: String){
+    
+    /// Highlights available capture positions for a selected piece
+    ///
+    /// This function checks all possible jump moves for the piece at position (i,j)
+    /// and marks valid capture destinations with reduced opacity. It handles both
+    /// regular pieces (forward only) and king pieces (forward and backward).
+    ///
+    /// - Parameters:
+    ///   - i: Row index of the piece
+    ///   - j: Column index of the piece
+    ///   - turncolor: Color of the current player's pieces
+    ///   - enemycolor: Color of the opponent's pieces
+    ///   - imageType: Image name for the current player's pieces
+    ///   - oppImageType: Image name for opponent's pieces (unused)
+    func PouncedPosition(i: Int, j: Int, turncolor: Color, enemycolor: Color, imageType: String, oppImageType: String) {
         if feature[i][j].color == Color.orange {
             if feature[i][j].mark == false {
                 if i + 2 < 8 && j - 2 >= 0 && feature[i+1][j-1].color == enemycolor && feature[i+2][j-2].transparent == 0{
@@ -446,7 +529,17 @@ struct VsPlayer: View {
         }
     }
     
-    func CheckMovement(color:Color)->Bool{
+    // MARK: - Win Condition Detection
+    
+    /// Checks if a player has any legal moves available
+    ///
+    /// This function scans the entire board to determine if the specified color
+    /// has at least one piece that can make a legal move. If no moves are available,
+    /// the player has lost the game.
+    ///
+    /// - Parameter color: The color of the player to check
+    /// - Returns: True if the player has legal moves, false if they're stuck (game over)
+    func CheckMovement(color: Color) -> Bool {
         for i in 0...7{
             for j in 0...7{
                 if color == Color.orange {
@@ -517,31 +610,50 @@ struct VsPlayer: View {
         heal = [coordinate]()
     }
     
-    func CheckSelect(i:Int, j:Int){
+    // MARK: - Main Game Logic
+    
+    /// Handles piece selection and move execution - the core game interaction function
+    ///
+    /// This function is called when the player taps a square on the board. It handles:
+    /// - Determining whose turn it is
+    /// - Validating piece selection
+    /// - Showing available moves
+    /// - Executing moves and captures
+    /// - Switching turns
+    /// - Detecting win conditions
+    ///
+    /// - Parameters:
+    ///   - i: Row index of the tapped square
+    ///   - j: Column index of the tapped square
+    func CheckSelect(i: Int, j: Int) {
+        // Determine current player's colors and piece images
         var turncolor: Color
         var enemycolor: Color
         var imageType: String
         var oppImageType: String
-        switch turn{
-            case.orange:
+        
+        switch turn {
+        case .orange:
             turncolor = Color.orange
-                imageType = "redchecker"
-            case.black:
+            imageType = "redchecker"
+        case .black:
             turncolor = Color.black
-                imageType = "blackchecker"
+            imageType = "blackchecker"
         }
-        if turncolor == Color.orange{
+        
+        if turncolor == Color.orange {
             enemycolor = Color.black
             oppImageType = "blackchecker"
-        } else{
+        } else {
             enemycolor = Color.orange
             oppImageType = "redchecker"
         }
         
-        if CheckMovement(color: turncolor)==false{
-            if turncolor == Color.black{
+        // Check for win condition: if current player has no legal moves, they lose
+        if CheckMovement(color: turncolor) == false {
+            if turncolor == Color.black {
                 win = "Orange"
-            } else{
+            } else {
                 win = "Black"
             }
         }
@@ -715,14 +827,23 @@ struct VsPlayer: View {
         }
     }
     
-    func king(i:Int, j:Int) -> Double{
-        if feature[i][j].mark == true{
+    // MARK: - King Indicator
+    
+    /// Returns the opacity for displaying the king crown icon
+    /// - Parameters:
+    ///   - i: Row index of the piece
+    ///   - j: Column index of the piece
+    /// - Returns: 1.0 if piece is a king (shows crown), 0.0 otherwise (hides crown)
+    func king(i: Int, j: Int) -> Double {
+        if feature[i][j].mark == true {
             return 1
-        } else{
+        } else {
             return 0
         }
     }
 }
+
+// MARK: - Preview Provider
 
 struct VsPlayer_Previews: PreviewProvider {
     static var previews: some View {
