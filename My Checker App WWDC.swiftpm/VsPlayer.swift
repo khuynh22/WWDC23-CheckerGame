@@ -529,7 +529,17 @@ struct VsPlayer: View {
         }
     }
     
-    func CheckMovement(color:Color)->Bool{
+    // MARK: - Win Condition Detection
+    
+    /// Checks if a player has any legal moves available
+    ///
+    /// This function scans the entire board to determine if the specified color
+    /// has at least one piece that can make a legal move. If no moves are available,
+    /// the player has lost the game.
+    ///
+    /// - Parameter color: The color of the player to check
+    /// - Returns: True if the player has legal moves, false if they're stuck (game over)
+    func CheckMovement(color: Color) -> Bool {
         for i in 0...7{
             for j in 0...7{
                 if color == Color.orange {
@@ -817,14 +827,23 @@ struct VsPlayer: View {
         }
     }
     
-    func king(i:Int, j:Int) -> Double{
-        if feature[i][j].mark == true{
+    // MARK: - King Indicator
+    
+    /// Returns the opacity for displaying the king crown icon
+    /// - Parameters:
+    ///   - i: Row index of the piece
+    ///   - j: Column index of the piece
+    /// - Returns: 1.0 if piece is a king (shows crown), 0.0 otherwise (hides crown)
+    func king(i: Int, j: Int) -> Double {
+        if feature[i][j].mark == true {
             return 1
-        } else{
+        } else {
             return 0
         }
     }
 }
+
+// MARK: - Preview Provider
 
 struct VsPlayer_Previews: PreviewProvider {
     static var previews: some View {
