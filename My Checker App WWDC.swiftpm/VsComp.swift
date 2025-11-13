@@ -2,28 +2,72 @@
  Project for WWDC 2023
  Author: Khang Nguyen Huynh
  Finished on April 15th, 2023
- VsComp file
+ VsComp file - Player vs Computer Game View with AI
  */
+
 import SwiftUI
 import AVFoundation
 
+/// The main game view for Player vs Computer mode
+///
+/// This view implements a checkers game where a human player (black) competes
+/// against an AI opponent (red/orange). The computer uses strategic move selection
+/// with capture prioritization to provide challenging gameplay suitable for beginners
+/// and intermediate players.
 struct home: View {
-    enum turns{
-        case orange, black
+    // MARK: - Types
+    
+    /// Enumeration representing which player's turn it is
+    enum turns {
+        /// Orange/Red player (computer-controlled)
+        case orange
+        
+        /// Black player (human-controlled)
+        case black
     }
-    @Binding var computermode:Bool
-    @Binding var present:gamemode
-    @State var feature:[[Features]] = Array(repeating: Array(repeating: Features(), count: 8), count: 8)
-    @State var turn:turns = .black
+    
+    // MARK: - State Properties
+    
+    /// Binding to control the display of this game screen
+    @Binding var computermode: Bool
+    
+    /// Binding to track the current game mode
+    @Binding var present: gamemode
+    
+    /// 2D array representing the 8x8 game board with all piece states
+    @State var feature: [[Features]] = Array(repeating: Array(repeating: Features(), count: 8), count: 8)
+    
+    /// Current player's turn
+    @State var turn: turns = .black
+    
+    /// Available legal move positions for the currently selected piece
     @State var heal = [coordinate]()
+    
+    /// Potential capture positions for the currently selected piece
     @State var enemy = [coordinate]()
+    
+    /// Stores the position of the currently selected piece
     @State var exchanges = coordinate(x: 0, y: 0)
+    
+    /// Pieces that have mandatory captures available (forced jumps)
     @State var eat = [coordinate]()
+    
+    /// Indicates whether a capture search is in progress
     @State var search: Bool = false
+    
+    /// Count of remaining red/orange pieces (computer)
     @State var numberRed: Int = 12
+    
+    /// Count of remaining black pieces (human player)
     @State var numberBlack: Int = 12
+    
+    /// Win message to display ("Bot Win" for computer, "You Win" for player, or empty string)
     @State var win: String = ""
+    
+    /// Indicates if the computer has completed its turn
     @State var black_finished: Bool = false
+    
+    /// Indicates if the computer's last move was a capture
     @State var black_eat: Bool = false
     
     var body: some View {
