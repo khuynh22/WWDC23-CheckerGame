@@ -622,24 +622,32 @@ struct home: View {
                     if turncolor == Color.orange{
                         black_finished = true
                     }
-                    if enemycolor == Color.orange{
-                        if eat.count == 0{
-                            for col in 0...7{
-                                for row in 0...7{
-                                    if black_finished == false && feature[col][row].color == Color.orange{
+                    // AI Move Selection Algorithm
+                    // This implements the computer opponent's decision-making process
+                    if enemycolor == Color.orange {
+                        if eat.count == 0 {
+                            // Strategy 1: No captures available - make first valid move found
+                            // Scans board left-to-right, top-to-bottom for any movable piece
+                            // This creates predictable but valid gameplay suitable for beginners
+                            for col in 0...7 {
+                                for row in 0...7 {
+                                    if black_finished == false && feature[col][row].color == Color.orange {
                                         CheckSelect(i: col, j: row)
-                                    } else if black_finished == true{
+                                    } else if black_finished == true {
                                         break
                                     }
                                 }
-                                if black_finished == true{
+                                if black_finished == true {
                                     break
                                 }
                             }
                             black_finished = false
-                        } else{
+                        } else {
+                            // Strategy 2: Captures available - MUST capture (forced jump rule)
+                            // Randomly selects one piece from all pieces that can capture
+                            // This adds unpredictability while following checkers rules
                             black_finished = false
-                         let tmp = Int.random(in: 0...eat.count-1)
+                            let tmp = Int.random(in: 0...eat.count-1)
                             CheckSelect(i: eat[tmp].x, j: eat[tmp].y)
                         }
                     }

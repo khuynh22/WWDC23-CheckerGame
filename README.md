@@ -154,9 +154,11 @@ Found a bug or have a feature request? Please [open an issue](https://github.com
 
 ## 📄 License
 
-This project was created by **Khang Nguyen Huynh** for the WWDC23 Student Scholarship submission. 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-While no formal open-source license is applied, the code is shared for educational purposes. If you'd like to use or build upon this project, please reach out via email at [timhuynhwork@gmail.com](mailto:timhuynhwork@gmail.com) to discuss.
+**Created by Khang Nguyen Huynh** for the WWDC23 Student Scholarship submission.
+
+While the MIT License grants broad permissions, the author appreciates being contacted at [timhuynhwork@gmail.com](mailto:timhuynhwork@gmail.com) before significant reuse or commercialization of this work.
 
 ## 🙏 Acknowledgments
 

@@ -600,31 +600,50 @@ struct VsPlayer: View {
         heal = [coordinate]()
     }
     
-    func CheckSelect(i:Int, j:Int){
+    // MARK: - Main Game Logic
+    
+    /// Handles piece selection and move execution - the core game interaction function
+    ///
+    /// This function is called when the player taps a square on the board. It handles:
+    /// - Determining whose turn it is
+    /// - Validating piece selection
+    /// - Showing available moves
+    /// - Executing moves and captures
+    /// - Switching turns
+    /// - Detecting win conditions
+    ///
+    /// - Parameters:
+    ///   - i: Row index of the tapped square
+    ///   - j: Column index of the tapped square
+    func CheckSelect(i: Int, j: Int) {
+        // Determine current player's colors and piece images
         var turncolor: Color
         var enemycolor: Color
         var imageType: String
         var oppImageType: String
-        switch turn{
-            case.orange:
+        
+        switch turn {
+        case .orange:
             turncolor = Color.orange
-                imageType = "redchecker"
-            case.black:
+            imageType = "redchecker"
+        case .black:
             turncolor = Color.black
-                imageType = "blackchecker"
+            imageType = "blackchecker"
         }
-        if turncolor == Color.orange{
+        
+        if turncolor == Color.orange {
             enemycolor = Color.black
             oppImageType = "blackchecker"
-        } else{
+        } else {
             enemycolor = Color.orange
             oppImageType = "redchecker"
         }
         
-        if CheckMovement(color: turncolor)==false{
-            if turncolor == Color.black{
+        // Check for win condition: if current player has no legal moves, they lose
+        if CheckMovement(color: turncolor) == false {
+            if turncolor == Color.black {
                 win = "Orange"
-            } else{
+            } else {
                 win = "Black"
             }
         }
