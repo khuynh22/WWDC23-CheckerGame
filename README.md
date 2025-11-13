@@ -67,6 +67,8 @@ My Checker App WWDC.swiftpm/
 
 ## 🚀 Getting Started
 
+> **⚡ Want to jump right in?** Check out our [Quick Start Guide](QUICK_START.md) for a 5-minute setup!
+
 ### Prerequisites
 - macOS 12.0 or later
 - Swift Playgrounds 4.0+ (available on Mac App Store)
@@ -104,6 +106,8 @@ My Checker App WWDC.swiftpm/
 4. Captures are mandatory when available
 5. Reach the opposite end to crown your piece as a King
 6. Win by capturing all opponent pieces or blocking all their moves
+
+📖 For detailed setup instructions, troubleshooting, and development tips, see [QUICK_START.md](QUICK_START.md)
 
 ## 🛠️ Technologies & Frameworks
 
